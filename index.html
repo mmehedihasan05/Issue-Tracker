@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en" theme="">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Issue Tracker</title>
+    <!-- <link href="fontawesome-free-5.15.4-web/css/all.css" rel="stylesheet"> -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css"
+        integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="responsive.css">
+</head>
+
+<body>
+    <!-- Applying theme before loading the html page.
+        If this executes after loading html page, whole page will flash for 20/50 ms -->
+    <script>
+        let html = document.querySelector("html");
+
+        if (localStorage.getItem("theme")) {
+            html.setAttribute("theme", localStorage.getItem("theme"));
+        }
+        //
+        else if (!localStorage.getItem("theme")) {
+            if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+                html.setAttribute("theme", "dark");
+                localStorage.setItem("theme", "dark");
+            } else {
+                html.setAttribute("theme", "light");
+                localStorage.setItem("theme", "light");
+            }
+        }
+    </script>
+
+    <!-- Main Html page -->
+    <div class="container">
+
+        <!-- Header -->
+        <header id="header">
+            <div id="logo" class="logo">
+                <h1>Issue Tracker</h1>
+            </div>
+            <div class="nav">
+
+                <div class="theme-toggle">
+                    <button class="theme-change">
+                        <div class="button-round"></div>
+
+                        <div class="theme-change--names">
+                            <p class="theme-change--names_light">Light</p>
+                            <p class="theme-change--names_dark">Dark</p>
+                        </div>
+                    </button>
+                </div>
+                <!-- <div>
+                    <button>Clear localStorage</button>
+                </div> -->
+
+
+            </div>
+        </header>
+
+
+        <!-- Action -->
+        <section class="actionMsg_section">
+            <p></p>
+        </section>
+
+
+
+        <!-- Main Form -->
+        <section class="mainForm_section">
+            <h2>Add New Issue</h2>
+            <form>
+                <!-- Description -->
+                <div class="form-control descriptionSection">
+                    <!--Title-->
+                    <div>
+                        <label for="description">
+                            <p class="title">Description</p>
+                        </label>
+                    </div>
+
+                    <!--Input-->
+                    <div>
+                        <input type="text" placeholder="Describe the issue" name="description" id="description">
+                    </div>
+
+                    <!--Error-->
+                    <div>
+                        <small class="error tiny">Type description</small>
+                    </div>
+                </div>
+
+                <!-- Priority -->
+                <div class="form-control prioritySection">
+
+                    <!--Title-->
+                    <div>
+                        <label for="priority">
+                            <p class="title">Priority</p>
+                        </label>
+                    </div>
+
+                    <!--Input-->
+                    <div>
+                        <select name="priority" id="priority">
+                            <option selected hidden value="false">Select Priority</option>
+                            <!--Watch on it-->
+                            <option value="low">Low</option>
+                            <option value="medium">Medium</option>
+                            <option value="high">High</option>
+                        </select>
+                    </div>
+
+                    <!--Error-->
+                    <div>
+                        <small class="error tiny">Select Priority</small>
+                    </div>
+
+                </div>
+
+                <!-- Assigned To -->
+                <div class="form-control assignedToSection">
+
+                    <!--Title-->
+                    <div>
+                        <label for="assigned">
+                            <p class="title">Assigned To</p>
+                        </label>
+                    </div>
+
+                    <!--Input-->
+                    <div>
+                        <select name="assigned" id="assigned">
+                            <option selected hidden value="false">Select employee</option>
+                            <!--Watch on it-->
+                            <option value="mehedi_10">Mehedi_10</option>
+                            <option value="alif_11">Alif_11</option>
+                            <option value="hasan_12">Hasan_12</option>
+                        </select>
+                    </div>
+
+                    <!--Error-->
+                    <div>
+                        <small class="error tiny">Select Employee</small>
+                    </div>
+                </div>
+
+                <!-- Add/Submit Button -->
+                <div class="submitButton">
+                    <button type="submit" id="submit">Add</button>
+                </div>
+
+            </form>
+        </section>
+
+
+        <!-- Delete Checked or Close Checked Button -->
+        <div class="deleteAll_section">
+            <div class="deleteMarkedButton hidden">
+                <button class="delete-marked" id="delete-marked">Delete Marked</button>
+            </div>
+
+            <div class="confirmation hidden">
+                <div>
+                    <p>Do you really want to delete marked issues?</p>
+                </div>
+                <div>
+                    <button id="confirm_yes">Yes</button>
+                    <button id="confirm_no">No</button>
+                </div>
+
+            </div>
+        </div>
+
+
+        <!-- Title and Issues -->
+        <section class="issueInfo_section">
+
+            <!-- All headings and buttons -->
+            <div class="heading_buttons">
+                <!-- Checklist -->
+                <div class="titleCenter noHover">
+                    <!-- <p>Serial</p> -->
+                    <!-- <label for="mainCheckbox"></label>
+                    <input type="checkbox" name="" id="mainCheckbox" class="mark-checkbox"> -->
+
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="mainCheckbox" class="mark-checkbox hidden">
+
+                        <!-- <i class="fas fa-minus"></i> -->
+                        <!-- <i class="fas fa-check"></i> -->
+                        <span class="checkbox-icon">
+                            <i class="fas fa-minus"></i>
+                        </span>
+                    </label>
+                </div>
+
+                <!-- Description -->
+                <div class="doublePart noHover">
+                    <div class="titleCenter">
+                        <p>Description</p>
+                    </div>
+
+                    <div class="descriptionSearch">
+
+                        <div class="icon_Input">
+
+                            <label for="search">
+                                <button class="searchField_open" title="Search on description">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </label>
+
+                            <input id="search" class="close" type="text" placeholder="Search on description">
+
+                            <button class="searchField_close close" title="Close">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- It will sort by date -->
+                <div class="singlePart sortBtn ">
+                    <div class="dateDiv">
+                        <button class="date_sort" order="neutral">
+                            <p>Date</p>
+
+                            <p class="sorting_icons">
+                                <span class="default inactive">
+                                    <i class="fas fa-long-arrow-alt-down "></i><i class="fas fa-long-arrow-alt-up"></i>
+                                </span>
+                                <span class="active descending">
+                                    <i class="active fas fa-sort-amount-down"></i>
+                                </span>
+                                <span class="active ascending">
+                                    <i class="active fas fa-sort-amount-down-alt"></i>
+                                </span>
+                            </p>
+
+                        </button>
+                    </div>
+
+                </div>
+
+                <!-- It will sort by priority -->
+                <div class="singlePart sortBtn " selectSort>
+                    <div class="" selectSort>
+                        <button class="priority_sort select_sort_btn" list-shown="no" order="neutral" selectSort>
+                            <p selectSort>Priority</p>
+                            <span>
+                                <i class="fas fa-chevron-down" selectSort></i>
+                            </span>
+
+
+
+                        </button>
+                    </div>
+
+                    <div class="sortBtn-List" selectSort>
+                        <ul class="priority_sort--list" sort-on="priorityStatus" selectSort>
+                            <li selectSort serial="0">Low</li>
+                            <li selectSort serial="1">Medium</li>
+                            <li selectSort serial="2">High</li>
+                        </ul>
+                    </div>
+
+                </div>
+
+                <!-- It will sort by Assigned to -->
+                <div class="singlePart sortBtn assignedTo" selectSort>
+                    <div class="" selectSort>
+                        <button class="assignedTo_sort select_sort_btn" list-shown="no" order="neutral" selectSort>
+                            <p selectSort>Assigned To</p>
+
+                            <span>
+                                <i class="fas fa-chevron-down" selectSort></i>
+                            </span>
+                        </button>
+                    </div>
+
+                    <div class="sortBtn-List" selectSort>
+                        <ul class="assignedTo_sort--list" sort-on="employee-name" selectSort>
+                            <li selectSort serial="0">Mehedi_10</li>
+                            <li selectSort serial="1">Alif_11</li>
+                            <li selectSort serial="2">Hasan_12</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- It will sort by status -->
+                <div class="singlePart sortBtn ">
+                    <button class="status_sort" order="neutral">
+                        <p>Status</p>
+                        <p class="sorting_icons">
+                            <span class="default inactive">
+                                <i class="fas fa-long-arrow-alt-down "></i><i class="fas fa-long-arrow-alt-up"></i>
+                            </span>
+                            <span class="active descending">
+                                <i class="fas fa-sort-alpha-down"></i>
+                            </span>
+                            <span class="active ascending">
+                                <i class="fas fa-sort-alpha-down-alt"></i>
+                            </span>
+                        </p>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Shows the issue -->
+            <div class="issue_info">
+                <!-- 
+            Issues will appear here.
+                 -->
+            </div>
+
+        </section>
+
+
+
+        <!-- Calculated and others Section -->
+        <section class="calculation_section">
+            <div class="total_opened">Opened Issue: <span></span></div>
+            <div class="total_closed">Closed Issue: <span></span></div>
+            <div class="total">Total Issue: <span></span></div>
+            <div class="local_storage_clear_content">
+                <button class="local_storage_clear_btn">
+                    Clear localStorage
+                </button>
+            </div>
+        </section>
+    </div>
+
+    <!-- Small Device Warning Message -->
+    <div class="small-device-warning" style="display: none">
+        <div class="small-device-warning--content">
+            <div class="small-device-warning--content--close">
+                <button id="warning-close">
+                </button>
+            </div>
+            <hr>
+            <div>
+                You are visiting from a low screen size device.
+                Issue Tracker doesn't fit well with low screen size devices. Switch to desktop or laptop for best
+                experience.
+
+                <br><br>
+                <ul>
+                    <li>Drag left to see other information about the issues.</li>
+                </ul>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+
+</body>
+
+</html>
